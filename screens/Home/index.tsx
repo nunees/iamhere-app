@@ -1,21 +1,56 @@
 import React from "react";
-import { Text, View, TextInput, TouchableOpacity } from "react-native";
+import {
+  Text,
+  View,
+  TextInput,
+  TouchableOpacity,
+  FlatList,
+  Alert,
+} from "react-native";
 
 import { Participant } from "../../components/Participant";
 
 import { styles } from "./style";
 
 export default function Home() {
-  function handleParticipantAdd() {
-    console.log("Clicou no botao de adicionar");
+  const participants = [
+    "Rodrigo",
+    "Vini",
+    "Diego",
+    "Biro",
+    "Amanda",
+    "Magna",
+    "Sabrina",
+    "Jacky",
+    "Giovanna",
+  ];
+
+  function handleParticipantAdd(name: string) {
+    if (participants.includes(name)) {
+      return Alert.alert(
+        "Participante existe",
+        "Participante registrado na lista"
+      );
+    }
+  }
+
+  function handleParticipantRemove(name: string) {
+    Alert.alert("Remover", `Deseja remover o participante ${name}?`, [
+      {
+        text: "sim",
+        onPress: () => Alert.alert("Removido"),
+      },
+      {
+        text: "Cancelar",
+        style: "cancel",
+      },
+    ]);
   }
 
   return (
     <View style={styles.container}>
       <Text style={styles.eventName}>Nome do Evento</Text>
-
       <Text style={styles.eventDate}>Sexta, 4 de Novembro de 2022.</Text>
-
       <View style={styles.form}>
         <TextInput
           style={styles.input}
@@ -25,15 +60,29 @@ export default function Home() {
 
         <TouchableOpacity
           style={styles.button}
-          onPress={(e) => console.log("clicou em adicionar")}
+          onPress={() => handleParticipantAdd("Magna")}
         >
           <Text style={styles.buttonText}>+</Text>
         </TouchableOpacity>
       </View>
 
-      <Participant />
-      <Participant />
-      <Participant />
+      <FlatList
+        showsVerticalScrollIndicator={false}
+        data={participants}
+        keyExtractor={(item) => item}
+        renderItem={({ item }) => (
+          <Participant
+            key={item.indexOf(item)}
+            name={item}
+            onRemove={() => handleParticipantRemove(item)}
+          />
+        )}
+        ListEmptyComponent={() => (
+          <Text style={styles.listEmptyText}>
+            Nao ha ninguem adicionado a lista ainda
+          </Text>
+        )}
+      />
     </View>
   );
 }
