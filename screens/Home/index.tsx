@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Text,
   View,
@@ -9,29 +9,20 @@ import {
 } from "react-native";
 
 import { Participant } from "../../components/Participant";
-
 import { styles } from "./style";
 
 export default function Home() {
-  const participants = [
-    "Rodrigo",
-    "Vini",
-    "Diego",
-    "Biro",
-    "Amanda",
-    "Magna",
-    "Sabrina",
-    "Jacky",
-    "Giovanna",
-  ];
+  const [participants, setParticipants] = useState(["Amanda"]);
 
-  function handleParticipantAdd(name: string) {
-    if (participants.includes(name)) {
+  function handleParticipantAdd() {
+    if (participants.includes("Rodrigo")) {
       return Alert.alert(
         "Participante existe",
         "Participante registrado na lista"
       );
     }
+
+    setParticipants((prevState) => [...prevState, "Ana"]);
   }
 
   function handleParticipantRemove(name: string) {
@@ -60,7 +51,7 @@ export default function Home() {
 
         <TouchableOpacity
           style={styles.button}
-          onPress={() => handleParticipantAdd("Magna")}
+          onPress={() => handleParticipantAdd()}
         >
           <Text style={styles.buttonText}>+</Text>
         </TouchableOpacity>
