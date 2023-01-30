@@ -30,7 +30,10 @@ export default function Home() {
     Alert.alert("Remover", `Deseja remover o participante ${name}?`, [
       {
         text: "sim",
-        onPress: () => Alert.alert("Removido"),
+        onPress: () =>
+          setParticipants((prevState) =>
+            prevState.filter((participant) => participant !== name)
+          ),
       },
       {
         text: "Cancelar",
